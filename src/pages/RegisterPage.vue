@@ -18,6 +18,30 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
+      <!-- First Name -->
+      <b-form-group label="First Name" label-for="first_name">
+        <b-form-input
+          id="first_name"
+          v-model="state.first_name"
+          @blur="v$.first_name.$touch()"
+        />
+        <b-form-invalid-feedback v-if="v$.first_name.$error">
+          First name is required.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <!-- Last Name -->
+      <b-form-group label="Last Name" label-for="last_name">
+        <b-form-input
+          id="last_name"
+          v-model="state.last_name"
+          @blur="v$.last_name.$touch()"
+        />
+        <b-form-invalid-feedback v-if="v$.last_name.$error">
+          Last name is required.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
       <!-- Country -->
       <b-form-group label="Country" label-for="country">
         <b-form-select
@@ -52,14 +76,27 @@
         <b-form-input
           id="confirmedPassword"
           type="password"
-          v-model="state.confirmedPassword"
-          @blur="v$.confirmedPassword.$touch()"
+          v-model="state.password_confirm"
+          @blur="v$.password_confirm.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.confirmedPassword.$error">
           <div v-if="!v$.confirmedPassword.required">Confirmation is required.</div>
           <div v-else-if="!v$.confirmedPassword.sameAsPassword">
             Passwords do not match.
           </div>
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <!-- Email -->
+      <b-form-group label="Email" label-for="email">
+        <b-form-input
+          id="email"
+          type="email"
+          v-model="state.email"
+          @blur="v$.email.$touch()"
+        />
+        <b-form-invalid-feedback v-if="v$.email.$error">
+          Valid email is required.
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -86,7 +123,7 @@
 <script>
 import { reactive } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
-import { required, minLength, maxLength, alpha, sameAs } from '@vuelidate/validators';
+import { required, minLength, maxLength, email as emailValidator, alpha, sameAs } from '@vuelidate/validators';
 import rawCountries from '../assets/countries';
 
 export default {
@@ -94,9 +131,12 @@ export default {
   setup() {
     const state = reactive({
       username: '',
+      first_name: '',
+      last_name: '',
+      country: '',      
       password: '',
-      confirmedPassword: '',
-      country: '',
+      password_confirm: '',
+      email: '',
       submitError: null,
     });
 
@@ -107,16 +147,19 @@ export default {
         maxLength: maxLength(8),
         alpha,
       },
+      first_name: { required },
+      last_name: { required },
       country: { required },
       password: {
         required,
         minLength: minLength(5),
         maxLength: maxLength(10),
       },
-      confirmedPassword: {
+      password_confirm: {
         required,
         sameAsPassword: sameAs(() => state.password),
       },
+      email: { required, email: emailValidator },
     };
 
     const v$ = useVuelidate(rules, state);
@@ -128,8 +171,12 @@ export default {
       try {
         await window.axios.post('/register', {
           username: state.username,
-          password: state.password,
+          first_name: state.first_name,
+          last_name: state.last_name,
           country: state.country,
+          password: state.password,
+          password_confirm: state.password_confirm,
+          email: state.email,
         });
         window.toast('Registration successful', 'You can now login', 'success');
         window.router.push('/login');
