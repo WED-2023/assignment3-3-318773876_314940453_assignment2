@@ -5,7 +5,6 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { createRouter, createWebHistory } from 'vue-router';
 
-// Bootstrap CSS + JS
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 
@@ -13,6 +12,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import BootstrapVue3 from 'bootstrap-vue-3';
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 import { BContainer, BRow, BCol } from 'bootstrap-vue-3';
+import Vuelidate from '@vuelidate/core';
+
 
 // Router setup
 const router = createRouter({
@@ -47,6 +48,7 @@ const app = createApp(App);
 app.use(router);
 app.use(VueAxios, axios);
 app.use(BootstrapVue3);
+app.use(Vuelidate); 
 
 // Register global BootstrapVue3 components
 app.component('BContainer', BContainer);
