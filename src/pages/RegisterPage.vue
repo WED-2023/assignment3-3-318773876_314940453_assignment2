@@ -79,9 +79,9 @@
           v-model="state.password_confirm"
           @blur="v$.password_confirm.$touch()"
         />
-        <b-form-invalid-feedback v-if="v$.confirmedPassword.$error">
-          <div v-if="!v$.confirmedPassword.required">Confirmation is required.</div>
-          <div v-else-if="!v$.confirmedPassword.sameAsPassword">
+        <b-form-invalid-feedback v-if="v$.password_confirm.$error">
+          <div v-if="!v$.password_confirm.required">Confirmation is required.</div>
+          <div v-else-if="!v$.password_confirm.sameAsPassword">
             Passwords do not match.
           </div>
         </b-form-invalid-feedback>
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, minLength, maxLength, email as emailValidator, alpha, sameAs } from '@vuelidate/validators';
 import rawCountries from '../assets/countries';
@@ -140,6 +140,8 @@ export default {
       submitError: null,
     });
 
+    const passwordComputed = computed(() => state.password);
+
     const rules = {
       username: {
         required,
@@ -157,7 +159,7 @@ export default {
       },
       password_confirm: {
         required,
-        sameAsPassword: sameAs(() => state.password),
+        sameAsPassword: sameAs(passwordComputed),
       },
       email: { required, email: emailValidator },
     };
@@ -165,7 +167,10 @@ export default {
     const v$ = useVuelidate(rules, state);
 
     const register = async () => {
+      v$.value.$touch();
+      
       const valid = await v$.value.$validate();
+
       if (!valid) return;
 
       try {
@@ -185,9 +190,11 @@ export default {
       }
     };
 
+    console.log('Validation errors:', v$.value);
+
     return {
       state,
-      countries: ['Select a country', ...rawCountries],
+      countries: [{ value: '', text: 'Select a country' }, ...rawCountries.map(c => ({ value: c, text: c }))],
       register,
       v$,
     };

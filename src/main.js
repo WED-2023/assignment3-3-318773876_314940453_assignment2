@@ -2,6 +2,11 @@ import { createApp, reactive } from 'vue';
 import App from './App.vue';
 import routes from './router/index';
 import axios from 'axios';
+
+window.axios = axios;
+axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.withCredentials = true;
+
 import VueAxios from 'vue-axios';
 import { createRouter, createWebHistory } from 'vue-router';
 
