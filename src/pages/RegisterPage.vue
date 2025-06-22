@@ -7,14 +7,15 @@
         <b-form-input
           id="username"
           v-model="state.username"
+          :state="!v$.username.$invalid || !v$.username.$dirty ? null : false"
           @blur="v$.username.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.username.$error">
           <div v-if="!v$.username.required">Username is required.</div>
-          <div v-else-if="!v$.username.minLength || !v$.username.maxLength">
-            Username must be 3–8 characters.
-          </div>
-          <div v-else-if="!v$.username.alpha">Username must contain only letters.</div>
+          <div v-else-if="!v$.username.minLength">Username must be at least 3 characters.</div>
+          <div v-else-if="!v$.username.maxLength">Username must be no more than 8 characters.</div>
+          <div v-else-if="!v$.username.alpha">Username must contain only letters (a–z).</div>
+          <div v-else>Invalid username.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -23,6 +24,7 @@
         <b-form-input
           id="first_name"
           v-model="state.first_name"
+          :state="!v$.first_name.$invalid || !v$.first_name.$dirty ? null : false"
           @blur="v$.first_name.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.first_name.$error">
@@ -35,6 +37,7 @@
         <b-form-input
           id="last_name"
           v-model="state.last_name"
+          :state="!v$.last_name.$invalid || !v$.last_name.$dirty ? null : false"
           @blur="v$.last_name.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.last_name.$error">
@@ -48,6 +51,7 @@
           id="country"
           v-model="state.country"
           :options="countries"
+          :state="!v$.country.$invalid || !v$.country.$dirty ? null : false"
           @change="v$.country.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.country.$error">
@@ -61,13 +65,14 @@
           id="password"
           type="password"
           v-model="state.password"
+          :state="!v$.password.$invalid || !v$.password.$dirty ? null : false"
           @blur="v$.password.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.password.$error">
           <div v-if="!v$.password.required">Password is required.</div>
-          <div v-else-if="!v$.password.minLength || !v$.password.maxLength">
-            Password must be 5–10 characters.
-          </div>
+          <div v-else-if="!v$.password.minLength">Password must be at least 5 characters.</div>
+          <div v-else-if="!v$.password.maxLength">Password must be no more than 10 characters.</div>
+          <div v-else>Invalid password.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -77,13 +82,13 @@
           id="confirmedPassword"
           type="password"
           v-model="state.password_confirm"
+          :state="!v$.password_confirm.$invalid || !v$.password_confirm.$dirty ? null : false"
           @blur="v$.password_confirm.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.password_confirm.$error">
           <div v-if="!v$.password_confirm.required">Confirmation is required.</div>
-          <div v-else-if="!v$.password_confirm.sameAsPassword">
-            Passwords do not match.
-          </div>
+          <div v-else-if="!v$.password_confirm.sameAsPassword">Passwords do not match.</div>
+          <div v-else>Invalid confirmation.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -93,6 +98,7 @@
           id="email"
           type="email"
           v-model="state.email"
+          :state="!v$.email.$invalid || !v$.email.$dirty ? null : false"
           @blur="v$.email.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.email.$error">
