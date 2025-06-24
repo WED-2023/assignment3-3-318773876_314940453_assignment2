@@ -9,9 +9,10 @@
           id="username"
           v-model="state.username"
           :state="getValidationState(v$.username)"
+          @blur="v$.username.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.username.$error">
-          Username is required.
+          <div v-if="!v$.username.required">Username is required.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -22,9 +23,10 @@
           type="password"
           v-model="state.password"
           :state="getValidationState(v$.password)"
+          @blur="v$.password.$touch()"
         />
         <b-form-invalid-feedback v-if="v$.password.$error">
-          Password is required.
+          <div v-if="!v$.password.required">Password is required.</div>
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -49,13 +51,20 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, getCurrentInstance } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import axios from 'axios';
+
 
 export default {
   name: 'LoginPage',
   setup() {
+    const instance = getCurrentInstance();
+    const store = instance.appContext.config.globalProperties.store;
+    const toast = instance.appContext.config.globalProperties.toast;
+    const router = instance.appContext.config.globalProperties.$router;
+    
     const state = reactive({
       username: '',
       password: '',
@@ -74,16 +83,24 @@ export default {
     };
 
     const login = async () => {
+      v$.value.$touch();
       const valid = await v$.value.$validate();
-      if (!valid) return;
+
+      if (!valid) {
+        return;
+      }
 
       try {
-        await window.axios.post('/login', {
+        await axios.post('/login', {
           username: state.username,
           password: state.password,
         });
-        window.store.login(state.username);
-        window.router.push('/main');
+
+        store.login(state.username);
+
+        toast('Login successful', 'Welcome back!', 'success');
+        router.replace('/');
+
       } catch (err) {
         state.submitError = err.response?.data?.message || 'Unexpected error.';
       }

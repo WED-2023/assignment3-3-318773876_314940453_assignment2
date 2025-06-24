@@ -60,8 +60,40 @@ app.component('BContainer', BContainer);
 app.component('BRow', BRow);
 app.component('BCol', BCol);
 
+window.store = store;
 // Global store
 app.config.globalProperties.store = store;
+
+// Global toast function
+app.config.globalProperties.toast = (title, message, variant = 'primary') => {
+  const toast = document.createElement('div');
+  toast.className = `toast align-items-center text-white bg-${variant} border-0 show`;
+  toast.style.position = 'fixed';
+  toast.style.top = '1rem';
+  toast.style.left = '50%';
+  toast.style.transform = 'translateX(-50%)';
+  toast.style.minWidth = '250px';
+  toast.style.zIndex = 1055;
+
+  toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">
+        <strong>${title}</strong><br>${message}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  `;
+
+  document.body.appendChild(toast);
+
+  // מאפשר סגירה בלחיצה
+  toast.querySelector('.btn-close').onclick = () => toast.remove();
+
+  // הסרה אוטומטית אחרי 3 שניות
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+};
 
 // Mount app
 app.mount('#app');

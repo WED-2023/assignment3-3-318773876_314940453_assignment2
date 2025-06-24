@@ -13,7 +13,7 @@
         <button @click="logout" class="btn btn-link p-0">Logout</button> |
       </span>
     </div>
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </div>
 </template>
 
