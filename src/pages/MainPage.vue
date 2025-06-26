@@ -2,11 +2,11 @@
   <div class="container">
     <h1 class="title">Main Page</h1>
     <div class="row">
+      <!-- Left: Random recipes -->
       <div class="col-md-6">
         <RecipePreviewList
           title="Explore these recipes"
           :recipes="randomRecipes"
-          class="RandomRecipes center"
         />
 
         <div class="text-center mt-3">
@@ -14,39 +14,36 @@
         </div>
       </div>
 
+      <!-- Right: LoginForm or ViewedRecipes -->
       <div class="col-md-6">
-
-      <RecipePreviewList
-        title="Last watched recipes"
-        :recipes="viewedRecipes"
-        :class="{
-          RandomRecipes: true,
-          blur: !store.username,
-          center: true
-        }"
-      />
-      <div v-if="!store.username" class="text-center mt-4">
-      <router-link :to="{ name: 'login' }">
-        <button class="btn btn-primary">You need to Login to view this</button>
-      </router-link>
+        <LoginForm
+          v-if="!store?.username?.value"
+          @logged-in="loadViewedRecipes"
+        />
+        <RecipePreviewList
+          v-else
+          title="Last watched recipes"
+          :recipes="viewedRecipes"
+        />
+      </div>
     </div>
   </div>
-  </div>
-  </div>
+      
 </template>
 
 <script>
-import { getCurrentInstance, ref, onMounted } from 'vue';
+import { ref, onMounted, watch, inject } from 'vue';
 import RecipePreviewList from "../components/RecipePreviewList.vue";
+import LoginForm from '../components/LoginForm.vue';
 
 export default {
   components: {
-    RecipePreviewList
+    RecipePreviewList,
+    LoginForm
   },
   setup() {
-    const internalInstance = getCurrentInstance();
-    const store = internalInstance.appContext.config.globalProperties.store;
-
+    const store = inject('store');
+    
     const randomRecipes = ref([]);
     const viewedRecipes = ref([]);
 
@@ -59,20 +56,41 @@ export default {
       }
     };
 
-    onMounted(async () => {
-      await loadRandomRecipes();
+    const loadViewedRecipes = async () => {
+      try {
+        console.log("🔁 Requesting viewed recipes...");
+        const res = await window.axios.get('/user/recent');
+        console.log("✅ Got viewed recipes:", res.data);
+        viewedRecipes.value = res.data;
+      } catch (err) {
+        console.error('Failed to load viewed recipes', err);
+      }
+    };
 
-      if (store.username) {
-        try {
-          const res = await window.axios.get('/user/recent');
-          viewedRecipes.value = res.data;
-        } catch (err) {
-          console.error("Failed to load recent recipes", err);
-        }
+
+    onMounted(async () => {
+      console.log("username:", store?.username?.value);
+
+      await loadRandomRecipes();
+      if (store?.username?.value) {
+        await loadViewedRecipes();
       }
     });
+    
+    if (store?.username) {
+      watch(
+        () => store.username.value,
+        async (newUsername) => {
+          if (newUsername) {
+            await loadViewedRecipes();
+          } else {
+            viewedRecipes.value = [];
+          }
+        }
+      );
+    }
 
-    return { store, randomRecipes, viewedRecipes, loadRandomRecipes };
+    return { store, randomRecipes, viewedRecipes, loadRandomRecipes, loadViewedRecipes };
   }
 };
 </script>

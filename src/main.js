@@ -1,4 +1,4 @@
-import { createApp, reactive } from 'vue';
+import { createApp, ref } from 'vue';
 import App from './App.vue';
 import routes from './router/index';
 import axios from 'axios';
@@ -26,21 +26,23 @@ const router = createRouter({
   routes
 });
 
+const username = ref(localStorage.getItem('username'));
+
 // Shared store
-const store = reactive({
-  username: localStorage.getItem('username'),
+const store = {
+  username,
   server_domain: 'http://localhost:3000',
-  login(username) {
-    localStorage.setItem('username', username);
-    this.username = username;
-    console.log('login', this.username);
+  login(usernameVal) {
+    localStorage.setItem('username', usernameVal);
+    username.value = usernameVal;
+    console.log('login', username.value);
   },
   logout() {
     console.log('logout');
     localStorage.removeItem('username');
-    this.username = undefined;
+    username.value = null;
   },
-});
+};
 
 // Axios interceptors
 axios.interceptors.request.use((config) => config, (error) => Promise.reject(error));
@@ -97,3 +99,4 @@ app.config.globalProperties.toast = (title, message, variant = 'primary') => {
 
 // Mount app
 app.mount('#app');
+app.provide('store', store);
