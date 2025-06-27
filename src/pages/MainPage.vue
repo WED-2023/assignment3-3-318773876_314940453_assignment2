@@ -61,7 +61,7 @@ export default {
         console.log("🔁 Requesting viewed recipes...");
         const res = await window.axios.get('/user/recent');
         console.log("✅ Got viewed recipes:", res.data);
-        viewedRecipes.value = res.data;
+        viewedRecipes.value = res.data.recipes;
       } catch (err) {
         console.error('Failed to load viewed recipes', err);
       }
