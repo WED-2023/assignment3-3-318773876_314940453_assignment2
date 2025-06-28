@@ -1,126 +1,109 @@
 <template>
-    <div class="container">
-      <div v-if="recipe">
-        <div class="recipe-header mt-3 mb-4">
-          <h1>{{ recipe.title }}</h1>
-          <img :src="recipe.image" class="center" />
+  <div class="container">
+    <div v-if="recipe">
+      <!-- Header -->
+      <div class="recipe-header mt-3 mb-4 text-center">
+        <h1>{{ recipe.title }}</h1>
+        <img :src="recipe.image" class="recipe-image" alt="recipe image" />
+      </div>
+
+      <!-- Metadata (Preview style) -->
+      <div class="card-body text-center">
+        <p class="card-text">
+          <strong>time in minutes:</strong>
+          {{ recipe.prep_time_minutes || recipe.readyInMinutes }} min
+        </p>
+
+        <p class="card-text">
+          <strong>tags:</strong> {{ recipe.tags || "none" }}
+        </p>
+
+        <p class="card-text" v-if="recipe.has_gluten !== undefined">
+          <strong>gluten:</strong>
+          {{ recipe.has_gluten === true ? "contains" : recipe.has_gluten === false ? "gluten-free" : "—" }}
+        </p>
+
+        <p class="card-text">
+          <strong>viewed:</strong> {{ recipe.was_viewed ? "✔" : "—" }}
+        </p>
+
+        <p class="card-text">
+          <strong>favorite:</strong> {{ recipe.is_favorite ? "★" : "—" }}
+        </p>
+
+        <p class="card-text">
+          <strong>servings:</strong> {{ recipe.servings || "—" }}
+        </p>
+      </div>
+
+      <!-- Ingredients & Instructions -->
+      <div class="wrapper">
+        <div class="wrapped">
+          <h4>Ingredients list:</h4>
+          <ul>
+            <li v-for="(ing, index) in recipe.ingredients" :key="index">
+              {{ ing.amount }} ({{ ing.name }})
+            </li>
+          </ul>
         </div>
-        <div class="recipe-body">
-          <div class="wrapper">
-            <div class="wrapped">
-              <div class="mb-3">
-                <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-                <div>Likes: {{ recipe.aggregateLikes }} likes</div>
-              </div>
-              Ingredients:
-              <ul>
-                <li
-                  v-for="(r, index) in recipe.extendedIngredients"
-                  :key="index + '_' + r.id"
-                >
-                  {{ r.original }}
-                </li>
-              </ul>
-            </div>
-            <div class="wrapped">
-              Instructions:
-              <ol>
-                <li v-for="s in recipe._instructions" :key="s.number">
-                  {{ s.step }}
-                </li>
-              </ol>
-            </div>
-          </div>
+
+        <div class="wrapped">
+          <h4>Instructions:</h4>
+          <ol>
+            <li v-for="(step, index) in recipe.instructions.split('. ').filter(Boolean)" :key="index">
+              {{ step }}.
+            </li>
+          </ol>
         </div>
-        <!-- <pre>
-        {{ $route.params }}
-        {{ recipe }}
-      </pre
-        > -->
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        recipe: null
-      };
-    },
-    async created() {
-      try {
-        let response;
-        // response = this.$route.params.response;
-  
-        try {
-          response = await this.axios.get(
-            // "https://test-for-3-2.herokuapp.com/recipes/info",
-            this.$root.store.server_domain + "/recipes/info",
-            {
-              params: { id: this.$route.params.recipeId }
-            }
-          );
-  
-          // console.log("response.status", response.status);
-          if (response.status !== 200) this.$router.replace("/NotFound");
-        } catch (error) {
-          console.log("error.response.status", error.response.status);
-          this.$router.replace("/NotFound");
-          return;
-        }
-  
-        let {
-          analyzedInstructions,
-          instructions,
-          extendedIngredients,
-          aggregateLikes,
-          readyInMinutes,
-          image,
-          title
-        } = response.data.recipe;
-  
-        let _instructions = analyzedInstructions
-          .map((fstep) => {
-            fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-            return fstep.steps;
-          })
-          .reduce((a, b) => [...a, ...b], []);
-  
-        let _recipe = {
-          instructions,
-          _instructions,
-          analyzedInstructions,
-          extendedIngredients,
-          aggregateLikes,
-          readyInMinutes,
-          image,
-          title
-        };
-  
-        this.recipe = _recipe;
-      } catch (error) {
-        console.log(error);
+  </div>
+</template>
+
+<script>
+export default {
+  name: "RecipeViewPage",
+  data() {
+    return {
+      recipe: null,
+    };
+  },
+  async created() {
+    const recipeId = this.$route.params.recipeId;
+    const source = this.$route.query.source;
+
+    try {
+      const response = await this.axios.get(
+        this.$root.store.server_domain + "/recipes/" + recipeId, 
+        { params: { source }}
+      );
+
+      if (response.status !== 200) {
+        this.$router.replace("/NotFound");
+        return;
       }
+
+      this.recipe = response.data;
+    } catch (error) {
+      console.error(error);
+      this.$router.replace("/NotFound");
     }
-  };
-  </script>
-  
-  <style scoped>
-  .wrapper {
-    display: flex;
-  }
-  .wrapped {
-    width: 50%;
-  }
-  .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-  }
-  /* .recipe-header{
-  
-  } */
-  </style>
-  
+  },
+};
+</script>
+
+<style scoped>
+.recipe-image {
+  width: 50%;
+  display: block;
+  margin: 0 auto;
+}
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.wrapped {
+  flex: 1;
+}
+</style>

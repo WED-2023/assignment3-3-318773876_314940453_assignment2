@@ -2,7 +2,7 @@
   <div class="card h-100">
     <!-- Photo -->
 
-    <router-link :to="`/recipe/${recipe.id}`">
+    <router-link :to="`/recipe/${recipe.id}?source=${recipe.source}`">
       <img
         v-if="recipe.image"
         :src="recipe.image"
@@ -63,7 +63,7 @@ export default {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  cursor: pointer; /* מסמן למשתמש שהתמונה לחיצה */
+  cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
