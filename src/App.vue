@@ -1,3 +1,4 @@
+<!--
 <template>
   <div id="app">
     <div id="nav">
@@ -16,12 +17,24 @@
     <router-view :key="$route.fullPath" />
   </div>
 </template>
+-->
+
+<template>
+  <div id="app">
+    <NavBar />
+    <router-view :key="$route.fullPath" />
+  </div>
+</template>
 
 <script>
 import { getCurrentInstance } from 'vue';
+import NavBar from "@/components/NavBar.vue";
 
 export default {
   name: "App",
+  components: {
+    NavBar
+  },
   setup() {
     const internalInstance = getCurrentInstance();
     const store = internalInstance.appContext.config.globalProperties.store;

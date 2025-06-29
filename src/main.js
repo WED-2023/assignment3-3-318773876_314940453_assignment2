@@ -2,6 +2,19 @@ import { createApp, ref } from 'vue';
 import App from './App.vue';
 import routes from './router/index';
 import axios from 'axios';
+import {
+  BNavbar,
+  BNavbarNav,
+  BNavbarBrand,
+  BNavbarToggle,
+  BCollapse,
+  BNavItem,
+  BNavText,
+  BNavItemDropdown,
+  BDropdownItem,
+  BDropdownDivider,
+} from 'bootstrap-vue-3';
+
 
 window.axios = axios;
 axios.defaults.baseURL = 'http://localhost:3000';
@@ -11,7 +24,7 @@ import VueAxios from 'vue-axios';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+//import 'bootstrap/dist/js/bootstrap.bundle.js';
 
 // BootstrapVue 3
 import BootstrapVue3 from 'bootstrap-vue-3';
@@ -61,6 +74,16 @@ app.use(Vuelidate);
 app.component('BContainer', BContainer);
 app.component('BRow', BRow);
 app.component('BCol', BCol);
+app.component('BNavbar', BNavbar);
+app.component('BNavbarNav', BNavbarNav);
+app.component('BNavbarBrand', BNavbarBrand);
+app.component('BNavbarToggle', BNavbarToggle);
+app.component('BCollapse', BCollapse);
+app.component('BNavItem', BNavItem);
+app.component('BNavText', BNavText);
+app.component('BNavItemDropdown', BNavItemDropdown);
+app.component('BDropdownItem', BDropdownItem);
+app.component('BDropdownDivider', BDropdownDivider);
 
 window.store = store;
 // Global store
@@ -98,5 +121,6 @@ app.config.globalProperties.toast = (title, message, variant = 'primary') => {
 };
 
 // Mount app
+app.use(BootstrapVue3);
 app.mount('#app');
 app.provide('store', store);

@@ -1,12 +1,7 @@
+<!--
 <template>
   <div class="container">
     <h3>{{ title }}</h3>
-    
-    <!-- <div class="row">
-      <div class="col" v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
-      </div>
-    </div> -->
 
     <div class="d-flex flex-column align-items-center">
       <div v-for="r in recipes" :key="r.id" class="mb-3 w-100">
@@ -14,6 +9,28 @@
       </div>
     </div>
 
+  </div>
+</template>
+-->
+
+<template>
+  <div class="container">
+    <h3>{{ title }}</h3>
+
+    <div class="d-flex flex-column align-items-center">
+      <div v-for="r in recipes" :key="r.id" class="mb-3 w-100">
+        <router-link
+          v-if="clickable"
+          :to="`/recipe/${r.id}`"
+          class="text-decoration-none text-dark w-100 d-block"
+        >
+          <RecipePreview class="recipePreview" :recipe="r" />
+        </router-link>
+        <div v-else class="w-100">
+          <RecipePreview class="recipePreview" :recipe="r" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,6 +51,10 @@ export default {
       type: Array,
       required: true,
     },
+    clickable: {
+    type: Boolean,
+    default: true,
+    }
   },
 };
 //   data() {
