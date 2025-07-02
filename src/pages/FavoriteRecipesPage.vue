@@ -3,7 +3,7 @@
     <h1 class="title">My Favorite Recipes</h1>
     <RecipePreviewList
       :recipes="favoriteRecipes"
-      title="Your favorite recipes"
+      title=""
       :clickable="false"
     />
   </div>
@@ -44,5 +44,6 @@ export default {
 .title {
   margin-top: 20px;
   margin-bottom: 20px;
+  text-align: center;
 }
 </style>

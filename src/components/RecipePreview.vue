@@ -1,5 +1,5 @@
 <template>
-  <div class="card h-100">
+  <div class="card h-100 recipe-card">
     <!-- Photo -->
 
     <router-link :to="`/recipe/${recipe.id}?source=${recipe.source}`">
@@ -59,11 +59,20 @@ export default {
 </script>
 
 <style scoped>
+.recipe-card {
+  max-width: 500px;
+  margin: 0 auto 20px;
+  padding: 10px;
+  border-radius: 12px;
+}
+
 .recipe-image {
-  width: 100%;
+  width: 200px;
   height: 200px;
   object-fit: cover;
-  cursor: pointer;
+  border-radius: 10px;
+  margin: 10px auto;
+  display: block;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
