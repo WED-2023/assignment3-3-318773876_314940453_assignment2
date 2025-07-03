@@ -1,52 +1,69 @@
 <template>
   <div class="card h-100 recipe-card">
-    <!-- Photo -->
-
-    <router-link :to="`/recipe/${recipe.id}?source=${recipe.source}`">
-      <img
-        v-if="recipe.image"
-        :src="recipe.image"
-        class="card-img-top recipe-image"
-        alt="recipe image"
-      />
-    </router-link>
+    <!-- Photo with link -->
+    <div class="text-center">
+      <router-link
+        :to="`/recipe/${localRecipe.id}?source=${localRecipe.source}`"
+        class="d-inline-block"
+      >
+        <img
+          v-if="localRecipe.image"
+          :src="localRecipe.image"
+          class="card-img-top recipe-image"
+          alt="recipe image"
+        />
+      </router-link>
+    </div>
 
     <!-- body -->
     <div class="card-body text-center">
       <!-- name -->
-      <h5 class="card-title">{{ recipe.title }}</h5>
+      <h5 class="card-title">{{ localRecipe.title }}</h5>
 
       <!-- time -->
       <p class="card-text">
-        <strong> time in minutes: </strong>
-        {{ recipe.prep_time_minutes || recipe.readyInMinutes }} min
+        <strong>time in minutes:</strong>
+        {{ localRecipe.prep_time_minutes || localRecipe.readyInMinutes }} min
       </p>
 
       <!-- tags -->
       <p class="card-text">
-        <strong> tags: </strong> {{ recipe.tags || "none" }}
+        <strong>tags:</strong> {{ localRecipe.tags || "none" }}
       </p>
 
       <!-- gluten -->
-      <p class="card-text" v-if="recipe.has_gluten !== undefined">
-        <strong>gluten:</strong> {{ recipe.has_gluten === true ? 'contains' : recipe.has_gluten === false ? 'gluten-free' : '—' }}
+      <p class="card-text" v-if="localRecipe.has_gluten !== undefined">
+        <strong>gluten:</strong>
+        {{ localRecipe.has_gluten === true ? "contains" : localRecipe.has_gluten === false ? "gluten-free" : "—" }}
       </p>
 
       <!-- viewed indication -->
       <p class="card-text">
-        <strong>viewed:</strong> {{ recipe.was_viewed ? "✔" : "—" }}
+        <strong>viewed:</strong> {{ localRecipe.was_viewed ? "✔" : "—" }}
       </p>
 
-      <!-- favorite indication -->
-      <p class="card-text">
-        <strong>favorite:</strong> {{ recipe.is_favorite ? "★" : "—" }}
+      <!-- favorite with toggle button -->
+      <p class="card-text d-flex align-items-center justify-content-center gap-2">
+        <strong>favorite:</strong>
+        <button
+          class="btn p-0 border-0 bg-transparent"
+          @click.stop="toggleFavorite"
+          title="Toggle Favorite"
+        >
+          <span style="font-size: 20px;">
+            {{ localRecipe.is_favorite ? "♥" : "♡" }}
+          </span>
+        </button>
       </p>
-
     </div>
   </div>
 </template>
 
 <script>
+import { ref, watch } from "vue";
+//import { store } from "@/store";
+import { inject } from 'vue';
+
 export default {
   name: "RecipePreview",
   props: {
@@ -54,8 +71,45 @@ export default {
       type: Object,
       required: true
     }
+  },
+  setup(props) {
+    const localRecipe = ref({ ...props.recipe });
+    const store = inject('store');
+
+    watch(
+      () => props.recipe,
+      (newRecipe) => {
+        localRecipe.value = { ...newRecipe };
+      },
+      { deep: true }
+    );
+
+    const toggleFavorite = async () => {
+      if (!store?.username?.value) {
+        alert("You must be logged in to add favorites.");
+        return;
+      }
+      try {
+        if (!localRecipe.value.is_favorite) {
+          await window.axios.post("/user/favorites", {
+            recipeId: localRecipe.value.id
+          });
+          localRecipe.value.is_favorite = true;
+        } else {
+          alert("Already in favorites.");
+        }
+      } catch (err) {
+        console.error("Failed to mark as favorite:", err);
+        alert("Failed to save recipe as favorite.");
+      }
+    };
+
+    return {
+      localRecipe,
+      toggleFavorite
+    };
   }
-}
+};
 </script>
 
 <style scoped>
