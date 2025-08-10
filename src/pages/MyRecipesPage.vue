@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onActivated } from 'vue';
+import { onBeforeRouteUpdate } from 'vue-router';
 import RecipePreviewList from '../components/RecipePreviewList.vue';
 
 export default {
@@ -19,22 +20,34 @@ export default {
   },
   setup() {
     const myRecipes = ref([]);
+    const loading = ref(false);
 
     const loadMyRecipes = async () => {
+      loading.value = true;
       try {
         const res = await window.axios.get('/user/recipes');
         myRecipes.value = res.data.recipes;
       } catch (err) {
         console.error('Failed to load my recipes:', err);
       }
+      finally {
+        loading.value = false;
+      }
     };
 
-    onMounted(() => {
-      loadMyRecipes();
-    });
+    // טעינה ראשונה
+    onMounted(loadMyRecipes);
 
+    onActivated(loadMyRecipes);
+
+    onBeforeRouteUpdate((to, from, next) => {
+      loadMyRecipes().finally(() => next());
+    });
+    
     return {
-      myRecipes
+      myRecipes,
+      loading,
+      loadMyRecipes
     };
   }
 };

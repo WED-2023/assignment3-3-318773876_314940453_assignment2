@@ -127,7 +127,8 @@
 </template>
 
 <script>
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref, getCurrentInstance } from 'vue';
+import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, minLength, maxLength, email as emailValidator, alpha, sameAs } from '@vuelidate/validators';
 import rawCountries from '../assets/countries';
@@ -135,6 +136,11 @@ import rawCountries from '../assets/countries';
 export default {
   name: 'RegisterPage',
   setup() {
+    const router = useRouter();
+
+    const { appContext } = getCurrentInstance();
+    const toast = appContext.config.globalProperties.toast;
+
     const state = reactive({
       username: '',
       first_name: '',
@@ -146,6 +152,7 @@ export default {
       submitError: null,
     });
 
+    const submitting = ref(false);
     const passwordComputed = computed(() => state.password);
 
     const rules = {
@@ -174,10 +181,10 @@ export default {
 
     const register = async () => {
       v$.value.$touch();
-      
-      const valid = await v$.value.$validate();
+      if (!(await v$.value.$validate()) || submitting.value) return;
 
-      if (!valid) return;
+      submitting.value = true;
+      state.submitError = null;
 
       try {
         await window.axios.post('/register', {
@@ -189,20 +196,28 @@ export default {
           password_confirm: state.password_confirm,
           email: state.email,
         });
-        window.toast('Registration successful', 'You can now login', 'success');
-        window.router.push('/login');
+        //window.toast('Registration successful', 'You can now login', 'success');
+        //window.router.push('/login');
+        router.push({ name: 'login' });
+        toast?.('Registration successful', 'You can now login', 'success');
       } catch (err) {
-        state.submitError = err.response?.data?.message || 'Unexpected error.';
+        const status = err.response?.status;
+        if (status === 409) {
+          state.submitError = 'Username is already taken.';
+        } else {
+          state.submitError = err.response?.data?.message || 'Unexpected error.';
+        }
+      } finally {
+        submitting.value = false;
       }
     };
-
-    console.log('Validation errors:', v$.value);
 
     return {
       state,
       countries: [{ value: '', text: 'Select a country' }, ...rawCountries.map(c => ({ value: c, text: c }))],
       register,
       v$,
+      submitting
     };
   },
 };

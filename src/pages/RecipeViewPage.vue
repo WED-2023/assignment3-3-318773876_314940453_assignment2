@@ -40,9 +40,11 @@
       <div class="wrapper">
         <div class="wrapped">
           <h4>Ingredients list:</h4>
-          <ul>
+          <ul class="ingredients">
             <li v-for="(ing, index) in recipe.ingredients" :key="index">
-              {{ ing.amount }} ({{ ing.name }})
+              <span class="name">{{ ing.name }}</span>
+              <span class="sep"> — </span>
+              <bdi class="amount">{{ ing.amount }}</bdi>
             </li>
           </ul>
         </div>
@@ -106,4 +108,9 @@ export default {
 .wrapped {
   flex: 1;
 }
+.ingredients { padding-inline-start: 20px; }
+.ingredients .name { font-weight: 500; }
+.ingredients .sep { opacity: .7; }
+.ingredients .amount { color: #555; }
+
 </style>
