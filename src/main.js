@@ -13,6 +13,15 @@ import {
   BNavItemDropdown,
   BDropdownItem,
   BDropdownDivider,
+  BModal,
+  BForm, 
+  BFormGroup, 
+  BFormInput, 
+  BFormTextarea,
+  BFormSelect, 
+  BFormCheckboxGroup, 
+  BFormCheckbox,
+  BButton,
 } from 'bootstrap-vue-3';
 
 
@@ -84,6 +93,15 @@ app.component('BNavText', BNavText);
 app.component('BNavItemDropdown', BNavItemDropdown);
 app.component('BDropdownItem', BDropdownItem);
 app.component('BDropdownDivider', BDropdownDivider);
+app.component('BModal', BModal);
+app.component('BForm', BForm);
+app.component('BFormGroup', BFormGroup);
+app.component('BFormInput', BFormInput);
+app.component('BFormTextarea', BFormTextarea);
+app.component('BFormSelect', BFormSelect);
+app.component('BFormCheckboxGroup', BFormCheckboxGroup);
+app.component('BFormCheckbox', BFormCheckbox);
+app.component('BButton', BButton);
 
 window.store = store;
 // Global store
