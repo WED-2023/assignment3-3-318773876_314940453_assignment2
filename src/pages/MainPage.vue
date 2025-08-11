@@ -1,32 +1,40 @@
 <template>
-  <div class="container">
-    <h1 class="title">Main Page</h1>
-    <div class="row">
+  <div class="container-fluid page">
+    <h1 class="page-title text-center">Main Page</h1>
+
+    <div class="main-grid">
+    <div class="row g-4 align-items-stretch">
       <!-- Left: Random recipes -->
       <div class="col-md-6">
-        <RecipePreviewList
-          title="Explore these recipes"
-          :recipes="randomRecipes"
-        />
+        <div class="card-clean p-4 h-100">
+          <h2 class="title mb-3">Explore these recipes</h2>
 
-        <div class="text-center mt-3">
-          <button class="btn btn-primary" @click="loadRandomRecipes">Load New</button>
+          <RecipePreviewList :recipes="randomRecipes" />
+
+          <div class="text-center mt-3">
+            <button class="btn btn-primary" @click="loadRandomRecipes">Load New</button>
+          </div>
         </div>
       </div>
 
       <!-- Right: LoginForm or ViewedRecipes -->
-      <div class="col-md-6">
-        <LoginForm
-          v-if="!store?.username?.value"
-          @logged-in="loadViewedRecipes"
-        />
-        <RecipePreviewList
-          v-else
-          title="Last watched recipes"
-          :recipes="viewedRecipes"
-        />
+      <div class="col-12 col-lg-6 d-flex">
+        <div class="card-clean p-4 w-100">
+
+          <template v-if="store?.username?.value">
+            <h2 class="title mb-3">Last watched recipes</h2>
+            <RecipePreviewList :recipes="viewedRecipes" />
+          </template>
+
+          <template v-else>
+            <LoginForm @logged-in="loadViewedRecipes" />
+          </template>
+        
+          <RecipePreviewList :recipes="viewedRecipes" />
+        </div>
       </div>
     </div>
+  </div>
   </div>
       
 </template>
@@ -95,16 +103,40 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.RandomRecipes {
-  margin: 10px 0 10px;
+<style scoped>
+.card-clean { height: 100%; }
+
+.page {
+  --band-h: 120px;
+  position: relative;
+  padding-top: calc(var(--band-h) + 16px);
 }
-.blur {
-  -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
-  filter: blur(2px);
-}
-::v-deep .blur .recipe-preview {
+
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: var(--band-h);
+  background: linear-gradient(180deg, rgba(109, 80, 255, .18), rgba(109, 80, 255, 0));
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
   pointer-events: none;
-  cursor: default;
 }
+
+.page-title {
+  position: absolute;
+  top: calc(var(--band-h) / 2 - 6px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+
+  color: #342c56;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+
+  font-weight: 800;
+}
+
 </style>

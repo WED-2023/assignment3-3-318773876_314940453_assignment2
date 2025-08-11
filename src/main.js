@@ -42,6 +42,8 @@ import { BContainer, BRow, BCol } from 'bootstrap-vue-3';
 import Vuelidate from '@vuelidate/core';
 
 
+import './scss/theme.scss';
+
 // Router setup
 const router = createRouter({
   history: createWebHistory(),

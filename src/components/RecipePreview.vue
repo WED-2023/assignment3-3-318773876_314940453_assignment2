@@ -134,4 +134,24 @@ export default {
   transform: scale(1.02);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
+
+.card-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.25;
+  margin: 10px 0 6px;
+  color: #222;
+  text-align: center;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-title:hover {
+  color: var(--brand);
+}
+
 </style>
