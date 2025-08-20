@@ -1,8 +1,13 @@
 <template>
-  <div>
-    <h3 class="mb-3">Sign In</h3>
+  <div class="container mt-4" style="max-width: 400px;">
+    <h2 class="title">Login</h2>
     <b-form @submit.prevent="login">
-      <b-form-group label="Username" label-for="username">
+      <!-- Username -->
+      <b-form-group 
+        label="Username" 
+        label-for="username" 
+        label-class="label-bold"
+      >
         <b-form-input
           id="username"
           v-model="state.username"
@@ -14,7 +19,12 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Password" label-for="password">
+      <!-- Password -->
+      <b-form-group 
+        label="Password" 
+        label-for="password"
+        label-class="label-bold"
+      >
         <b-form-input
           id="password"
           type="password"
@@ -27,11 +37,7 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-checkbox v-model="rememberMe" class="mb-2">
-        Remember me
-      </b-form-checkbox>
-
-      <b-button type="submit" variant="primary" class="w-100">Submit</b-button>
+      <b-button type="submit" variant="primary" class="w-100">Login</b-button>
 
       <b-alert
         variant="danger"
@@ -43,8 +49,9 @@
         Login failed: {{ state.submitError }}
       </b-alert>
 
-      <div class="mt-2 text-end">
-        <a href="#">Forgot <u>password?</u></a>
+      <div class="mt-2 text-center">
+        Don’t have an account?
+        <router-link to="/register">Register here</router-link>
       </div>
     </b-form>
   </div>
@@ -54,14 +61,16 @@
 import { reactive, getCurrentInstance } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import axios from 'axios';
 
 export default {
-  name: 'LoginForm',
-  setup(_, { emit }) {
+  name: 'LoginPage',
+  setup() {
     const instance = getCurrentInstance();
     const store = instance.appContext.config.globalProperties.store;
     const toast = instance.appContext.config.globalProperties.toast;
-
+    const router = instance.appContext.config.globalProperties.$router;
+    
     const state = reactive({
       username: '',
       password: '',
@@ -82,28 +91,43 @@ export default {
     const login = async () => {
       v$.value.$touch();
       const valid = await v$.value.$validate();
-      if (!valid) return;
+
+      if (!valid) {
+        return;
+      }
 
       try {
-        await window.axios.post('/login', {
+        await axios.post('/login', {
           username: state.username,
           password: state.password,
         });
+
         store.login(state.username);
-        emit('logged-in');
+
         toast('Login successful', 'Welcome back!', 'success');
+        router.replace('/');
+
       } catch (err) {
         state.submitError = err.response?.data?.message || 'Unexpected error.';
       }
     };
 
-    return {
-      state,
-      v$,
-      login,
-      getValidationState,
-      rememberMe: false
-    };
+    return { state, v$, login, getValidationState };
   },
 };
 </script>
+
+<style scoped>
+.title {
+  font-weight: bold;
+  text-align: center;
+  color: #2c2c2c;
+  font-size: 1.8rem; 
+  margin-bottom: 1.5rem;
+}
+
+.label-bold {
+  font-weight: bold !important;
+  color: #333;
+}
+</style>

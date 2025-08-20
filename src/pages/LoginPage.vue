@@ -1,10 +1,15 @@
-
 <template>
   <div class="container mt-4" style="max-width: 400px;">
-    <h2 class="mb-4">Login</h2>
+    <!-- כותרת אחידה -->
+    <h2 class="page-title">Login</h2>
+
     <b-form @submit.prevent="login">
       <!-- Username -->
-      <b-form-group label="Username" label-for="username">
+      <b-form-group 
+        label="Username" 
+        label-for="username"
+        label-class="label-bold"
+      >
         <b-form-input
           id="username"
           v-model="state.username"
@@ -17,7 +22,11 @@
       </b-form-group>
 
       <!-- Password -->
-      <b-form-group label="Password" label-for="password">
+      <b-form-group 
+        label="Password" 
+        label-for="password"
+        label-class="label-bold"
+      >
         <b-form-input
           id="password"
           type="password"
@@ -55,7 +64,6 @@ import { reactive, getCurrentInstance } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 import axios from 'axios';
-
 
 export default {
   name: 'LoginPage',
@@ -110,3 +118,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.page-title {
+  font-weight: 700;
+  text-align: center;
+  font-size: 2rem;
+  color: #4b0082; /* סגול כמו ב-Main Page */
+  margin-bottom: 1.5rem;
+}
+
+.label-bold {
+  font-weight: bold !important;
+  color: #333;
+}
+</style>
