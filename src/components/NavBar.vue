@@ -66,8 +66,9 @@ export default {
   --ink:          #1f2937;
 
   background: #fff;
-  font-family: 'Heebo', system-ui, -apple-system, sans-serif;
-  border-bottom: 1px solid rgba(124,58,237,.12);
+  font-family: "Rubik","Heebo",system-ui,sans-serif;
+  border-bottom: 2px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 .app-navbar :deep(.navbar-brand),

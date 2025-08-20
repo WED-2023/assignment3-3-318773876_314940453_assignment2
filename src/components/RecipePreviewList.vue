@@ -2,9 +2,9 @@
   <div class="container">
     <h3>{{ title }}</h3>
 
-    <div class="d-flex flex-column align-items-center">
-      <div v-for="r in recipes" :key="r.id" class="mb-3 w-100">
-        <RecipePreview class="recipePreview" :recipe="r" />
+    <div class="recipe-grid">
+      <div v-for="r in recipes" :key="r.id">
+        <RecipePreview :recipe="r" />
       </div>
     </div>
   </div>
@@ -62,4 +62,11 @@ export default {
 .container {
   min-height: 400px;
 }
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
 </style>

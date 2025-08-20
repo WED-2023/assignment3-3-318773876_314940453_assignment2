@@ -1,50 +1,62 @@
 <template>
-  <div class="container">
-    <h1 class="text-center my-4">Search Recipes</h1>
+  <div class="search-page">
+    <h1 class="page-title"> 📖 Search Recipes </h1>
 
-    <!-- search form -->
-    <form @submit.prevent="searchRecipes" class="mb-4">
-      <div class="mb-3">
-        <label class="form-label">Search Query</label>
-        <input v-model="query" class="form-control" required />
+    <div class="search-card">
+      <!-- form -->
+      <form @submit.prevent="searchRecipes" class="search-form">
+        <!-- Query -->
+        <div class="form-group">
+          <label>🔎 Search Query</label>
+          <input v-model="query" type="text" class="form-input" required />
+        </div>
+
+        <!-- Cuisine -->
+        <div class="form-group">
+          <label>🍲 Cuisine</label>
+          <select v-model="cuisine" class="form-input">
+            <option value="">-- Any --</option>
+            <option v-for="c in cuisines" :key="c" :value="c">{{ c }}</option>
+          </select>
+        </div>
+
+        <!-- Diet -->
+        <div class="form-group">
+          <label>🥗 Diet</label>
+          <select v-model="diet" class="form-input">
+            <option value="">-- Any --</option>
+            <option v-for="d in diets" :key="d" :value="d">{{ d }}</option>
+          </select>
+        </div>
+
+        <!-- Intolerances -->
+        <div class="form-group">
+          <label>⚠ Intolerances</label>
+          <select v-model="intolerances" multiple class="form-input">
+            <option v-for="i in intolerancesOptions" :key="i" :value="i">{{ i }}</option>
+          </select>
+        </div>
+
+        <!-- Number of Results -->
+        <div class="form-group">
+          <label>🔢 Number of Results</label>
+          <select v-model="number" class="form-input">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-search">🔍 Search</button>
+      </form>
+
+      <!-- chef image -->
+      <div class="chef-image">
+        <img src="@/assets/chef.jpg" alt="Chef" />
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label">Cuisine</label>
-        <select v-model="cuisine" class="form-select">
-          <option value="">-- Any --</option>
-          <option v-for="c in cuisines" :key="c" :value="c">{{ c }}</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Diet</label>
-        <select v-model="diet" class="form-select">
-          <option value="">-- Any --</option>
-          <option v-for="d in diets" :key="d" :value="d">{{ d }}</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Intolerances</label>
-        <select v-model="intolerances" multiple class="form-select">
-          <option v-for="i in intolerancesOptions" :key="i" :value="i">{{ i }}</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Number of Results</label>
-        <select v-model="number" class="form-select">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-
-    <!-- תוצאות -->
+    <!-- results -->
     <div v-if="recipes.length > 0">
       <RecipePreviewList :recipes="recipes" title="Search Results" :clickable="true" />
     </div>
@@ -60,9 +72,7 @@ import RecipePreviewList from '@/components/RecipePreviewList.vue';
 
 export default {
   name: 'SearchPage',
-  components: {
-    RecipePreviewList
-  },
+  components: { RecipePreviewList },
   setup() {
     const query = ref('');
     const cuisine = ref('');
@@ -100,7 +110,13 @@ export default {
             number: number.value
           }
         });
-        recipes.value = res.data.recipes;
+
+        // ✅ מוסיפים לכל מתכון source = 'external'
+        recipes.value = res.data.recipes.map(r => ({
+          ...r,
+          source: 'external'
+        }));
+
       } catch (err) {
         recipes.value = [];
         console.error(err);
@@ -120,8 +136,88 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  max-width: 700px;
+.search-page {
+  min-height: 100vh;
+  padding: 30px 15px;
+  font-family: 'Poppins','Assistant',sans-serif;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #4b0082;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+}
+
+.search-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 1000px;
   margin: auto;
+  padding: 25px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: start;
+  gap: 30px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #4b0082;
+}
+
+.form-input {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.95rem;
+}
+
+.btn-search {
+  margin-top: 15px;
+  background: #4b0082;  /* סגול */
+  color: white;         /* טקסט לבן */
+  border: none;
+  border-radius: 30px;
+  padding: 10px 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-search:hover {
+  background: #370060;  /* סגול כהה יותר */
+  transform: scale(1.05);
+}
+
+.chef-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chef-image img {
+  max-height: 220px;
+  object-fit: contain;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .search-card {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

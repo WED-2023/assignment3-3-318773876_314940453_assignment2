@@ -1,45 +1,38 @@
 <template>
-  <div class="container">
-    <div v-if="recipe">
-      <!-- Header -->
-      <div class="recipe-header mt-3 mb-4 text-center">
-        <h1>{{ recipe.title }}</h1>
-        <img :src="recipe.image" class="recipe-image" alt="recipe image" />
-      </div>
+  <div class="recipe-page container my-4" v-if="recipe">
+    <!-- כותרת -->
+    <h1 class="page-title text-center mb-4">{{ recipe.title }}</h1>
 
-      <!-- Metadata (Preview style) -->
-      <div class="card-body text-center">
-        <p class="card-text">
-          <strong>time in minutes:</strong>
-          {{ recipe.prep_time_minutes || recipe.readyInMinutes }} min
-        </p>
+    <!-- תמונה -->
+    <div class="recipe-image-box mb-4">
+      <img :src="recipe.image" class="recipe-image" alt="recipe image" />
+    </div>
 
-        <p class="card-text">
-          <strong>tags:</strong> {{ recipe.tags || "none" }}
-        </p>
+    <!-- פרטי מטא -->
+    <div class="meta d-flex justify-content-center gap-4 flex-wrap mb-4">
+      <span>⏱ <b>{{ recipe.prep_time_minutes || recipe.readyInMinutes }}</b> min</span>
+      <span>🍽 <b>{{ recipe.servings || "—" }}</b> servings</span>
+      <span>🏷 <b>{{ recipe.tags || "none" }}</b></span>
 
-        <p class="card-text" v-if="recipe.has_gluten !== undefined">
-          <strong>gluten:</strong>
-          {{ recipe.has_gluten === true ? "contains" : recipe.has_gluten === false ? "gluten-free" : "—" }}
-        </p>
+       <!-- צמחוני -->
+      <span v-if="recipe.is_vegetarian">
+        🌱 <b>צמחוני</b>
+      </span>
 
-        <p class="card-text">
-          <strong>viewed:</strong> {{ recipe.was_viewed ? "✔" : "—" }}
-        </p>
+      <span v-if="recipe.has_gluten !== undefined">
+        🌾 <b>{{ recipe.has_gluten ? "contains" : "gluten-free" }}</b>
+      </span>
+      
+      <span>👁 viewed: <b>{{ recipe.was_viewed ? "✔" : "—" }}</b></span>
+      <span>⭐ favorite: <b>{{ recipe.is_favorite ? "★" : "—" }}</b></span>
+    </div>
 
-        <p class="card-text">
-          <strong>favorite:</strong> {{ recipe.is_favorite ? "★" : "—" }}
-        </p>
-
-        <p class="card-text">
-          <strong>servings:</strong> {{ recipe.servings || "—" }}
-        </p>
-      </div>
-
-      <!-- Ingredients & Instructions -->
-      <div class="wrapper">
-        <div class="wrapped">
-          <h4>Ingredients list:</h4>
+    <!-- מצרכים והוראות -->
+    <div class="row g-4">
+      <!-- מצרכים -->
+      <div class="col-md-5">
+        <div class="card-clean p-4 h-100">
+          <h4 class="title">Ingredients</h4>
           <ul class="ingredients">
             <li v-for="(ing, index) in recipe.ingredients" :key="index">
               <span class="name">{{ ing.name }}</span>
@@ -48,11 +41,17 @@
             </li>
           </ul>
         </div>
+      </div>
 
-        <div class="wrapped">
-          <h4>Instructions:</h4>
+      <!-- הוראות -->
+      <div class="col-md-7">
+        <div class="card-clean p-4 h-100">
+          <h4 class="title">Instructions</h4>
           <ol>
-            <li v-for="(step, index) in recipe.instructions.split('. ').filter(Boolean)" :key="index">
+            <li
+              v-for="(step, index) in recipe.instructions.split('. ').filter(Boolean)"
+              :key="index"
+            >
               {{ step }}.
             </li>
           </ol>
@@ -76,8 +75,8 @@ export default {
 
     try {
       const response = await this.axios.get(
-        this.$root.store.server_domain + "/recipes/" + recipeId, 
-        { params: { source }}
+        this.$root.store.server_domain + "/recipes/" + recipeId,
+        { params: { source } }
       );
 
       if (response.status !== 200) {
@@ -95,22 +94,63 @@ export default {
 </script>
 
 <style scoped>
+/* כותרת */
+.page-title {
+  font-family: "Rubik","Heebo",sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 40px);
+  background: linear-gradient(90deg,#111827 0%,#7c3aed 65%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* תמונה */
+.recipe-image-box {
+  text-align: center;
+}
 .recipe-image {
-  width: 50%;
-  display: block;
-  margin: 0 auto;
+  max-width: 600px;
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
-.wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
+
+/* פרטי מטא */
+.meta span {
+  font-size: 1rem;
+  color: #475569;
 }
-.wrapped {
-  flex: 1;
+.meta b {
+  color: #0f172a;
 }
-.ingredients { padding-inline-start: 20px; }
+
+/* כרטיסים */
+.card-clean {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.05);
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+.title {
+  font-family: "Rubik","Heebo",sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 1rem;
+  color: #334155;
+}
+
+/* רשימות */
+.ingredients {
+  padding-left: 1rem;
+  line-height: 1.6;
+}
 .ingredients .name { font-weight: 500; }
-.ingredients .sep { opacity: .7; }
+.ingredients .sep { opacity: .6; margin: 0 4px; }
 .ingredients .amount { color: #555; }
 
+ol {
+  padding-left: 1.2rem;
+  line-height: 1.6;
+}
 </style>

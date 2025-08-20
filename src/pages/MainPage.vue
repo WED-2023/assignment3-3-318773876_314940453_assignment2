@@ -7,7 +7,7 @@
       <!-- Left: Random recipes -->
       <div class="col-md-6">
         <div class="card-clean p-4 h-100">
-          <h2 class="title mb-3">Explore these recipes</h2>
+          <h2 class="title mb-3 text-center">Explore these recipes</h2>
 
           <RecipePreviewList :recipes="randomRecipes" />
 
@@ -22,7 +22,7 @@
         <div class="card-clean p-4 w-100">
 
           <template v-if="store?.username?.value">
-            <h2 class="title mb-3">Last watched recipes</h2>
+            <h2 class="title mb-3 text-center">Last watched recipes</h2>
             <RecipePreviewList :recipes="viewedRecipes" />
           </template>
 
@@ -30,7 +30,6 @@
             <LoginForm @logged-in="loadViewedRecipes" />
           </template>
         
-          <RecipePreviewList :recipes="viewedRecipes" />
         </div>
       </div>
     </div>
@@ -66,10 +65,14 @@ export default {
 
     const loadViewedRecipes = async () => {
       try {
-        console.log("🔁 Requesting viewed recipes...");
         const res = await window.axios.get('/user/recent');
-        console.log("✅ Got viewed recipes:", res.data);
-        viewedRecipes.value = res.data.recipes;
+        
+        const unique = res.data.recipes.filter(
+          (r, index, self) =>
+            index === self.findIndex((x) => x.id === r.id)
+        );
+        
+        viewedRecipes.value = unique.slice(0, 3);
       } catch (err) {
         console.error('Failed to load viewed recipes', err);
       }
@@ -104,12 +107,17 @@ export default {
 </script>
 
 <style scoped>
-.card-clean { height: 100%; }
+.card-clean {
+  height: 100%;
+  background: none !important;  
+  box-shadow: none !important;   
+  border: none !important;       
+}
 
 .page {
-  --band-h: 120px;
-  position: relative;
-  padding-top: calc(var(--band-h) + 16px);
+  min-height: 100vh;
+  padding: 30px 15px;
+  font-family: 'Poppins','Assistant',sans-serif;
 }
 
 .page::before {

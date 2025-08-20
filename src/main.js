@@ -24,6 +24,7 @@ import {
   BButton,
 } from 'bootstrap-vue-3';
 
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 window.axios = axios;
 axios.defaults.baseURL = 'http://localhost:3000';

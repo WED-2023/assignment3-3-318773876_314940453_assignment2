@@ -171,4 +171,62 @@ export default {
 
 <style scoped>
 .gap-2 { gap: .5rem; }
+
+/* עיצוב כללי ל־modal */
+.modal-content {
+  border-radius: 1rem;          /* פינות עגולות */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2); /* צל רך */
+  border: none;
+}
+
+.modal-header {
+  border-bottom: 2px solid #f2f2f2;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+/* שדות */
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.form-control {
+  border-radius: 0.6rem;
+  border: 1px solid #ddd;
+  transition: border-color 0.2s;
+}
+.form-control:focus {
+  border-color: #6f42c1; /* סגול כמו בכפתורים */
+  box-shadow: 0 0 0 0.2rem rgba(111,66,193,.15);
+}
+
+/* מרכיבים */
+.ingredient-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+/* כפתורים */
+.btn {
+  border-radius: 0.6rem;
+}
+
+.btn-outline-danger {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.6rem;
+}
+
+.btn-outline-primary {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.6rem;
+}
+
+/* כפתורי פעולה בתחתית */
+.modal-footer {
+  border-top: none;
+  padding-top: 0;
+}
+
 </style>

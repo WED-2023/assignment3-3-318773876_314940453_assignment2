@@ -1,24 +1,3 @@
-<!--
-<template>
-  <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link> |
-      <router-link :to="{ name: 'search' }">Search</router-link> |
-      <span v-if="!store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link> |
-        <router-link :to="{ name: 'login' }">Login</router-link> |
-      </span>
-      <span v-else>
-        {{ store.username }}:
-        <button @click="logout" class="btn btn-link p-0">Logout</button> |
-      </span>
-    </div>
-    <router-view :key="$route.fullPath" />
-  </div>
-</template>
--->
-
 <template>
   <div id="app">
     <NavBar />
@@ -74,5 +53,11 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+body {
+  background: #f8f4ff;
+  min-height: 100vh;
+  font-family: 'Poppins','Assistant',sans-serif;
 }
 </style>
