@@ -1,59 +1,64 @@
 <template>
-  <div class="container mt-4" style="max-width: 400px;">
-    <h2 class="title">Login</h2>
-    <b-form @submit.prevent="login">
-      <!-- Username -->
-      <b-form-group 
-        label="Username" 
-        label-for="username" 
-        label-class="label-bold"
-      >
-        <b-form-input
-          id="username"
-          v-model="state.username"
-          :state="getValidationState(v$.username)"
-          @blur="v$.username.$touch()"
-        />
-        <b-form-invalid-feedback v-if="v$.username.$error">
-          <div v-if="!v$.username.required">Username is required.</div>
-        </b-form-invalid-feedback>
-      </b-form-group>
+  <div class="page container-narrow">
+    <div class="card-clean p-4 w-100">
+      <h2 class="title text-center">Login</h2>
 
-      <!-- Password -->
-      <b-form-group 
-        label="Password" 
-        label-for="password"
-        label-class="label-bold"
-      >
-        <b-form-input
-          id="password"
-          type="password"
-          v-model="state.password"
-          :state="getValidationState(v$.password)"
-          @blur="v$.password.$touch()"
-        />
-        <b-form-invalid-feedback v-if="v$.password.$error">
-          <div v-if="!v$.password.required">Password is required.</div>
-        </b-form-invalid-feedback>
-      </b-form-group>
+      <b-form @submit.prevent="login">
+        <!-- Username -->
+        <b-form-group 
+          label="Username" 
+          label-for="username" 
+          label-class="label-bold"
+        >
+          <b-form-input
+            id="username"
+            v-model="state.username"
+            :state="getValidationState(v$.username)"
+            @blur="v$.username.$touch()"
+          />
+          <b-form-invalid-feedback v-if="v$.username.$error">
+            <div v-if="!v$.username.required">Username is required.</div>
+          </b-form-invalid-feedback>
+        </b-form-group>
 
-      <b-button type="submit" variant="primary" class="w-100">Login</b-button>
+        <!-- Password -->
+        <b-form-group 
+          label="Password" 
+          label-for="password"
+          label-class="label-bold"
+        >
+          <b-form-input
+            id="password"
+            type="password"
+            v-model="state.password"
+            :state="getValidationState(v$.password)"
+            @blur="v$.password.$touch()"
+          />
+          <b-form-invalid-feedback v-if="v$.password.$error">
+            <div v-if="!v$.password.required">Password is required.</div>
+          </b-form-invalid-feedback>
+        </b-form-group>
 
-      <b-alert
-        variant="danger"
-        class="mt-3"
-        dismissible
-        v-if="state.submitError"
-        show
-      >
-        Login failed: {{ state.submitError }}
-      </b-alert>
+        <!-- כפתור -->
+        <b-button type="submit" variant="primary" class="w-100">Login</b-button>
 
-      <div class="mt-2 text-center">
-        Don’t have an account?
-        <router-link to="/register">Register here</router-link>
-      </div>
-    </b-form>
+        <!-- הודעת שגיאה -->
+        <b-alert
+          variant="danger"
+          class="mt-3"
+          dismissible
+          v-if="state.submitError"
+          show
+        >
+          Login failed: {{ state.submitError }}
+        </b-alert>
+
+        <div class="mt-2 text-center">
+          Don’t have an account?
+          <router-link to="/register">Register here</router-link>
+        </div>
+      </b-form>
+    </div>
   </div>
 </template>
 
@@ -116,18 +121,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.title {
-  font-weight: bold;
-  text-align: center;
-  color: #2c2c2c;
-  font-size: 1.8rem; 
-  margin-bottom: 1.5rem;
-}
-
-.label-bold {
-  font-weight: bold !important;
-  color: #333;
-}
-</style>

@@ -1,3 +1,5 @@
+/* theme.scss */
+
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=Rubik:wght@500;700&display=swap');
 
 :root{
@@ -10,13 +12,19 @@
   --bs-secondary: #64748b;
 }
 
-html, body { background:
-  linear-gradient(180deg, rgba(124,58,237,.06), rgba(124,58,237,0) 35%) ,
-  var(--bs-body-bg);
+/* רקע עדין כללי */
+html, body {
+  background: linear-gradient(180deg, rgba(109, 80, 255, .18), rgba(109, 80, 255, 0));
 }
 
-.container-narrow{ max-width: 1100px; }
+/* את זה נשתמש כקונטיינר מרכזי צר */
+.container-narrow{
+  max-width: 1100px;
+  margin-inline: auto;    /* מרכז את התוכן */
+  padding-inline: 1rem;   /* נשימה בצדדים */
+}
 
+/* כותרות */
 .page-title{
   font-family: "Rubik", "Heebo", system-ui, sans-serif;
   font-weight: 800;
@@ -35,7 +43,18 @@ html, body { background:
   color: #334155;
   margin: 12px 0 18px;
 }
+.title.text-center::after{
+  content: "";
+  display: block;
+  width: 84px;
+  height: 6px;
+  margin: 10px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(109, 80, 255, .18), rgba(109, 80, 255, 0));
+  opacity: .9;
+}
 
+/* כרטיס נקי (מסכים פנימיים) */
 .card-clean{
   background: #fff;
   border: 1px solid rgba(2,6,23,.06);
@@ -45,51 +64,179 @@ html, body { background:
     0 1px 1px rgba(2,6,23,.02);
 }
 
+/* כפתור ראשי סגול */
 .btn-primary{
   background-image: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
   border: none;
 }
 .btn-primary:hover{ filter: brightness(1.05); }
 
-.recipe-preview{
-  background: #fff;
-  border: 1px solid rgba(2,6,23,.06);
-  border-radius: 18px;
-  box-shadow:
-    0 10px 24px rgba(2,6,23,.07),
-    0 1px 1px rgba(2,6,23,.03);
-  transition: transform .18s, box-shadow .18s, border-color .18s;
-}
-.recipe-preview:hover{
-  transform: translateY(-4px);
-  box-shadow:
-    0 16px 32px rgba(2,6,23,.10),
-    0 2px 2px rgba(2,6,23,.04);
-  border-color: rgba(124,58,237,.25);
-}
-.recipe-preview img{
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  border-radius: 12px;
+/* ——————— NEW: מחלקות איחוד לדפי תוכן ——————— */
+
+/* רקע עמוד עם גרדיאנט עדין בראש, וגובה מינימלי מתחת לניווט */
+.page-bg{
+  min-height: calc(100vh - 64px);
+  padding: 24px 0 64px;
+  background:
+    radial-gradient(900px 220px at 50% 0, rgba(124,58,237,.25), rgba(124,58,237,0) 70%),
+    linear-gradient(180deg, #ede9fe 0%, #f5f3ff 45%, #ffffff 85%);
 }
 
+/* כרטיס עמוד אחיד (היה אצלך about-container / form-card) */
+.page-card{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 28px;
+  color: #0f172a;
+  line-height: 1.7;
+
+  background: rgba(255,255,255,.90);
+  backdrop-filter: saturate(1.05) blur(4px);
+  border: 1px solid rgba(124,58,237,.14);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(124,58,237,.08);
+}
+
+/* עזר ישן שנשאר לשימוש פנימי */
+.page { padding-top: 1rem; }
+
+/* דברים קיימים מהאתר */
+.recipe-preview{ /* ... כמו שהיה ... */ }
+.recipe-preview:hover{ /* ... */ }
+.recipe-preview img{ /* ... */ }
 .recipe-meta{ color:#475569; font-size:.95rem; }
 .recipe-meta b{ color:#0f172a; }
 
 .row.g-4 > [class^="col"]{ display: grid; gap: 16px; }
 [dir="rtl"] .page-title{ letter-spacing: 0; }
 
-.page { padding-top: 1rem; }
-
 .main-grid {
-  max-width: 1400px;   /* אפשר להגדיל/להקטין לפי הטעם */
+  max-width: 1400px;
   margin-inline: auto;
   padding-inline: 1rem;
 }
 
 .col-12.d-flex > .card-clean,
-.col-lg-6.d-flex > .card-clean {
-  flex: 1 1 auto;
-  height: 100%;
+.col-lg-6.d-flex > .card-clean { flex: 1 1 auto; height: 100%; }
+
+.label-bold { font-weight: bold; color: #333; }
+
+@media (max-width: 600px) {
+  .page-card { padding: 20px 16px; }
 }
+
+/* מעטפת דף עם הרקע הסגלגל */
+.page-frame{
+  min-height: calc(100vh - 64px);
+  padding: 24px 0 64px;
+  background:
+    radial-gradient(900px 220px at 50% 0, rgba(124,58,237,.25), rgba(124,58,237,0) 70%),
+    linear-gradient(180deg, #ede9fe 0%, #f5f3ff 45%, #ffffff 85%);
+}
+
+/* קונטיינר מרכזי רוחב אחיד */
+.content-card{
+  max-width: 1100px;          /* זהה בין העמודים */
+  margin: 0 auto;
+  padding: 32px 28px;
+}
+.content-card.narrow{ max-width: 520px; }   /* לטפסים קטנים כמו Login */
+.content-card.wide{   max-width: 1100px; }  /* לטפסים/דפים רחבים כמו Register/About */
+
+/* העיצוב של הכרטיס – משתמשים ב-card-clean הקיים */
+.card-clean.content-card{ /* רק לוודא שילוב נוח */
+  background: #fff;
+  border-radius: 18px;
+  box-shadow:
+    0 12px 30px rgba(124,58,237,.08),
+    0 8px 18px rgba(2,6,23,.06);
+  border: 1px solid rgba(124,58,237,.14);
+}
+
+/* כותרת אחידה עם קו תחתון עדין */
+.title.text-center{
+  position: relative;
+  font-weight: 800;
+  font-size: clamp(28px, 3.6vw, 40px);
+  color: #0f172a;
+  margin: 0 0 18px;
+}
+.title.text-center::after{
+  content:"";
+  display:block;
+  width: 96px;
+  height: 6px;
+  margin: 10px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(109,80,255,.18), rgba(109,80,255,0));
+}
+
+.card-medium {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ====== AUTH: כרטיס וטופס אחידים ====== */
+.page-frame{
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: flex-start;        /* אם תרצי למרכז אנכית: center */
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+/* כרטיס סטנדרטי לטפסי הזדהות */
+.auth-card{
+  width: 100%;
+  max-width: 920px;               /* אותו רוחב בכל העמודים */
+  background: #fff;
+  border: 1px solid rgba(2,6,23,.06);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(124,58,237,.08), 0 2px 2px rgba(2,6,23,.03);
+  padding: 28px;
+}
+
+/* אם תרצי גרסה מעט צרה יותר (לבחירה) */
+.auth-card--narrow{ max-width: 720px; }
+
+/* כותרת אחידה עם קו סגול קטן מתחת – כמו ב-MainPage */
+.auth-title{
+  text-align: center;
+  font-family: "Rubik","Heebo",system-ui,sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 3.4vw, 40px);
+  color: #1f2937;
+  margin: 0 0 14px;
+}
+.auth-title::after{
+  content:"";
+  display:block;
+  width: 92px;
+  height: 6px;
+  margin: 8px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(109,80,255,.18), rgba(109,80,255,0));
+}
+
+/* טיפוגרפיה של התוויות והשדות בטופס */
+.auth-form .form-group > label,
+.auth-form .b-form-group > label{
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: .35rem;
+}
+
+.auth-form .form-control,
+.auth-form .custom-select,
+.auth-form .b-form-select{
+  height: 48px;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+/* כפתור כמו בכרטיס ב-MainPage */
+.auth-form .btn-primary{
+  background-image: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+  border: none;
+}
+.auth-form .btn-primary:hover{ filter: brightness(1.05); }

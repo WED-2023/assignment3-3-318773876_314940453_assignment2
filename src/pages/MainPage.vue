@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid page">
-    <h1 class="page-title text-center">Main Page</h1>
+    <h1 class="page-title text-center">🌐Main Page</h1>
 
     <div class="main-grid">
     <div class="row g-4 align-items-stretch">
@@ -42,6 +42,7 @@
 import { ref, onMounted, watch, inject } from 'vue';
 import RecipePreviewList from "../components/RecipePreviewList.vue";
 import LoginForm from '../components/LoginForm.vue';
+import "../scss/theme.scss";
 
 export default {
   components: {
