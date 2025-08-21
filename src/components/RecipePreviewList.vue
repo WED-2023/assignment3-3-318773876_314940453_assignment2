@@ -33,30 +33,7 @@ export default {
     }
   },
 };
-//   data() {
-//     return {
-//       recipes: [],
-//     };
-//   },
-//   mounted() {
-//     this.updateRecipes();
-//   },
-//   methods: {
-//     async updateRecipes() {
-//       try {
-//         const response = await this.axios.get(
-//           this.$root.store.server_domain + "/recipes/3random"
-//         );
-//         const recipes = response.data.recipes;
-//         this.recipes = [];
-//         this.recipes.push(...recipes);
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     },
-//   },
-// };
-// </script>
+</script>
 
 <style scoped>
 .container {

@@ -25,6 +25,11 @@
           <h5 class="recipe-title">{{ r.recipe_name }}</h5>
 
           <div class="recipe-info rtl">
+            <i class="fas fa-user"></i>
+            <span><strong>של מי המתכון:</strong> {{ r.owner }}</span>
+          </div>
+
+          <div class="recipe-info rtl">
             <i class="fas fa-calendar-alt"></i>
             <span><strong>מתי מכינים:</strong> {{ r.when_prepared }}</span>
           </div>
@@ -101,7 +106,6 @@ export default {
   gap: 20px;
 }
 
-/* העתקת עיצוב הכרטיס מה-RecipePreview */
 .recipe-card {
   background: transparent;
   border-radius: 16px;

@@ -38,17 +38,22 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 export default {
   name: "NavBar",
   setup() {
     const store = window.store;
+    const router = useRouter();
 
     const logout = async () => {
       try {
         await window.axios.post("/logout");
-        store.username.value = null;
       } catch (err) {
         console.error("Logout failed", err);
+      } finally {
+        store.logout ? store.logout() : (store.username.value = null);
+        router.replace('/');
       }
     };
 
@@ -56,6 +61,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .app-navbar {

@@ -35,7 +35,7 @@ export default {
       }
     };
 
-    // טעינה ראשונה
+    // first load
     onMounted(loadMyRecipes);
 
     onActivated(loadMyRecipes);

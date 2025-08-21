@@ -12,19 +12,16 @@
   --bs-secondary: #64748b;
 }
 
-/* רקע עדין כללי */
 html, body {
   background: linear-gradient(180deg, rgba(109, 80, 255, .18), rgba(109, 80, 255, 0));
 }
 
-/* את זה נשתמש כקונטיינר מרכזי צר */
 .container-narrow{
   max-width: 1100px;
-  margin-inline: auto;    /* מרכז את התוכן */
-  padding-inline: 1rem;   /* נשימה בצדדים */
+  margin-inline: auto;    
+  padding-inline: 1rem;   
 }
 
-/* כותרות */
 .page-title{
   font-family: "Rubik", "Heebo", system-ui, sans-serif;
   font-weight: 800;
@@ -54,7 +51,6 @@ html, body {
   opacity: .9;
 }
 
-/* כרטיס נקי (מסכים פנימיים) */
 .card-clean{
   background: #fff;
   border: 1px solid rgba(2,6,23,.06);
@@ -64,16 +60,12 @@ html, body {
     0 1px 1px rgba(2,6,23,.02);
 }
 
-/* כפתור ראשי סגול */
 .btn-primary{
   background-image: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
   border: none;
 }
 .btn-primary:hover{ filter: brightness(1.05); }
 
-/* ——————— NEW: מחלקות איחוד לדפי תוכן ——————— */
-
-/* רקע עמוד עם גרדיאנט עדין בראש, וגובה מינימלי מתחת לניווט */
 .page-bg{
   min-height: calc(100vh - 64px);
   padding: 24px 0 64px;
@@ -82,7 +74,6 @@ html, body {
     linear-gradient(180deg, #ede9fe 0%, #f5f3ff 45%, #ffffff 85%);
 }
 
-/* כרטיס עמוד אחיד (היה אצלך about-container / form-card) */
 .page-card{
   max-width: 900px;
   margin: 0 auto;
@@ -97,13 +88,14 @@ html, body {
   box-shadow: 0 12px 30px rgba(124,58,237,.08);
 }
 
-/* עזר ישן שנשאר לשימוש פנימי */
 .page { padding-top: 1rem; }
 
-/* דברים קיימים מהאתר */
-.recipe-preview{ /* ... כמו שהיה ... */ }
-.recipe-preview:hover{ /* ... */ }
-.recipe-preview img{ /* ... */ }
+.recipe-preview{  }
+
+.recipe-preview:hover{  }
+
+.recipe-preview img{  }
+
 .recipe-meta{ color:#475569; font-size:.95rem; }
 .recipe-meta b{ color:#0f172a; }
 
@@ -125,7 +117,6 @@ html, body {
   .page-card { padding: 20px 16px; }
 }
 
-/* מעטפת דף עם הרקע הסגלגל */
 .page-frame{
   min-height: calc(100vh - 64px);
   padding: 24px 0 64px;
@@ -134,17 +125,15 @@ html, body {
     linear-gradient(180deg, #ede9fe 0%, #f5f3ff 45%, #ffffff 85%);
 }
 
-/* קונטיינר מרכזי רוחב אחיד */
 .content-card{
-  max-width: 1100px;          /* זהה בין העמודים */
+  max-width: 1100px;          
   margin: 0 auto;
   padding: 32px 28px;
 }
-.content-card.narrow{ max-width: 520px; }   /* לטפסים קטנים כמו Login */
-.content-card.wide{   max-width: 1100px; }  /* לטפסים/דפים רחבים כמו Register/About */
+.content-card.narrow{ max-width: 520px; }   
+.content-card.wide{   max-width: 1100px; }  
 
-/* העיצוב של הכרטיס – משתמשים ב-card-clean הקיים */
-.card-clean.content-card{ /* רק לוודא שילוב נוח */
+.card-clean.content-card{ 
   background: #fff;
   border-radius: 18px;
   box-shadow:
@@ -153,7 +142,6 @@ html, body {
   border: 1px solid rgba(124,58,237,.14);
 }
 
-/* כותרת אחידה עם קו תחתון עדין */
 .title.text-center{
   position: relative;
   font-weight: 800;
@@ -176,19 +164,17 @@ html, body {
   margin: 0 auto;
 }
 
-/* ====== AUTH: כרטיס וטופס אחידים ====== */
 .page-frame{
   min-height: calc(100vh - 64px);
   display: flex;
-  align-items: flex-start;        /* אם תרצי למרכז אנכית: center */
+  align-items: flex-start;        
   justify-content: center;
   padding: 32px 16px;
 }
 
-/* כרטיס סטנדרטי לטפסי הזדהות */
 .auth-card{
   width: 100%;
-  max-width: 920px;               /* אותו רוחב בכל העמודים */
+  max-width: 920px;               
   background: #fff;
   border: 1px solid rgba(2,6,23,.06);
   border-radius: 18px;
@@ -196,10 +182,8 @@ html, body {
   padding: 28px;
 }
 
-/* אם תרצי גרסה מעט צרה יותר (לבחירה) */
 .auth-card--narrow{ max-width: 720px; }
 
-/* כותרת אחידה עם קו סגול קטן מתחת – כמו ב-MainPage */
 .auth-title{
   text-align: center;
   font-family: "Rubik","Heebo",system-ui,sans-serif;
@@ -218,7 +202,6 @@ html, body {
   background: linear-gradient(180deg, rgba(109,80,255,.18), rgba(109,80,255,0));
 }
 
-/* טיפוגרפיה של התוויות והשדות בטופס */
 .auth-form .form-group > label,
 .auth-form .b-form-group > label{
   font-weight: 700;
@@ -234,7 +217,6 @@ html, body {
   font-size: 1rem;
 }
 
-/* כפתור כמו בכרטיס ב-MainPage */
 .auth-form .btn-primary{
   background-image: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
   border: none;

@@ -39,10 +39,10 @@
           </b-form-invalid-feedback>
         </b-form-group>
 
-        <!-- כפתור -->
+        <!-- button -->
         <b-button type="submit" variant="primary" class="w-100">Login</b-button>
 
-        <!-- הודעת שגיאה -->
+        <!-- error message -->
         <b-alert
           variant="danger"
           class="mt-3"

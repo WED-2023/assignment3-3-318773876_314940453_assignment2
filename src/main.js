@@ -34,7 +34,6 @@ import VueAxios from 'vue-axios';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import 'bootstrap/dist/css/bootstrap.css';
-//import 'bootstrap/dist/js/bootstrap.bundle.js';
 
 // BootstrapVue 3
 import BootstrapVue3 from 'bootstrap-vue-3';
@@ -132,10 +131,8 @@ app.config.globalProperties.toast = (title, message, variant = 'primary') => {
 
   document.body.appendChild(toast);
 
-  // מאפשר סגירה בלחיצה
   toast.querySelector('.btn-close').onclick = () => toast.remove();
 
-  // הסרה אוטומטית אחרי 3 שניות
   setTimeout(() => {
     toast.remove();
   }, 3000);

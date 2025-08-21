@@ -8,7 +8,7 @@
       <img :src="recipe.image" class="recipe-image" alt="recipe image" />
     </div>
 
-    <!-- פרטי מטא -->
+    <!-- פרטים -->
     <div class="meta d-flex justify-content-center gap-4 flex-wrap mb-4">
       <span>⏱ <b>{{ recipe.prep_time_minutes || recipe.readyInMinutes }}</b> min</span>
       <span>🍽 <b>{{ recipe.servings || "—" }}</b> servings</span>
@@ -94,7 +94,6 @@ export default {
 </script>
 
 <style scoped>
-/* כותרת */
 .page-title {
   font-family: "Rubik","Heebo",sans-serif;
   font-weight: 800;
@@ -105,7 +104,6 @@ export default {
   color: transparent;
 }
 
-/* תמונה */
 .recipe-image-box {
   text-align: center;
 }
@@ -116,7 +114,6 @@ export default {
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* פרטי מטא */
 .meta span {
   font-size: 1rem;
   color: #475569;
@@ -125,7 +122,6 @@ export default {
   color: #0f172a;
 }
 
-/* כרטיסים */
 .card-clean {
   background: #fff;
   border: 1px solid rgba(0,0,0,.05);
@@ -140,7 +136,6 @@ export default {
   color: #334155;
 }
 
-/* רשימות */
 .ingredients {
   padding-left: 1rem;
   line-height: 1.6;

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- כפתור רזרבי לפתיחה ידנית אם חזרו לעמוד -->
     <div class="text-center my-4">
       <b-button variant="primary" @click="show = true">Create New Recipe</b-button>
     </div>
@@ -59,7 +58,7 @@
           </div>
         </div>
 
-        <!-- Ingredients (dynamic) -->
+        <!-- Ingredients -->
         <b-form-group label="Ingredients list">
           <div v-for="(ing, i) in form.ingredients" :key="i" class="d-flex gap-2 mb-2">
             <b-form-input v-model="ing.amount" placeholder="amount (e.g. 2 cups)" class="me-2" />
@@ -100,16 +99,16 @@ export default {
     const router = useRouter();
     const show = ref(false);
     const submitting = ref(false);
-    const store = inject('store'); // מגיע מ-main.js דרך provide
+    const store = inject('store'); 
 
     const emptyForm = () => ({
       image: '',
       title: '',
       prep_time_minutes: null,
-      tags: null,          // יוצג "none" אם null
-      has_gluten: true,    // 'contains' כברירת מחדל
+      tags: null,          
+      has_gluten: true,    
       ingredients: [{ name: '', amount: '' }],
-      instructions: '',    // כל שורה = צעד
+      instructions: '',
       servings: null
     });
 
@@ -172,10 +171,9 @@ export default {
 <style scoped>
 .gap-2 { gap: .5rem; }
 
-/* עיצוב כללי ל־modal */
 .modal-content {
-  border-radius: 1rem;          /* פינות עגולות */
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2); /* צל רך */
+  border-radius: 1rem;          
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   border: none;
 }
 
@@ -185,7 +183,6 @@ export default {
   font-size: 1.25rem;
 }
 
-/* שדות */
 .form-group label {
   font-weight: 500;
   margin-bottom: 0.3rem;
@@ -197,18 +194,16 @@ export default {
   transition: border-color 0.2s;
 }
 .form-control:focus {
-  border-color: #6f42c1; /* סגול כמו בכפתורים */
+  border-color: #6f42c1; 
   box-shadow: 0 0 0 0.2rem rgba(111,66,193,.15);
 }
 
-/* מרכיבים */
 .ingredient-row {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 0.4rem;
 }
 
-/* כפתורים */
 .btn {
   border-radius: 0.6rem;
 }
@@ -223,7 +218,6 @@ export default {
   padding: 0.25rem 0.6rem;
 }
 
-/* כפתורי פעולה בתחתית */
 .modal-footer {
   border-top: none;
   padding-top: 0;
